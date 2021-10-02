@@ -8,13 +8,13 @@ class ArsProgressDialog {
   final BuildContext context;
 
   /// Main widget of dialog,
-  final Widget loadingWidget;
+  final Widget? loadingWidget;
 
   /// Whether dialog can dismiss by touching outside or not
   final bool dismissable;
 
   /// This function will trigger when user dismisses dialog
-  final Function onDismiss;
+  final Function? onDismiss;
 
   /// Amount of background blur
   final double blur;
@@ -32,7 +32,7 @@ class ArsProgressDialog {
   bool _isShowing = false;
 
   /// Dialog widget instance
-  _ArsProgressDialogWidget _progressDialogWidget;
+  _ArsProgressDialogWidget? _progressDialogWidget;
 
   /// Getter for _isShowing
   bool get isShowing => _isShowing;
@@ -71,7 +71,7 @@ class ArsProgressDialog {
         useSafeArea: useSafeArea,
         context: context,
         barrierDismissible: dismissable ?? true,
-        builder: (context) => _progressDialogWidget,
+        builder: (context) => _progressDialogWidget!,
         barrierColor: Colors.transparent,
       );
       _isShowing = false;
@@ -90,19 +90,19 @@ class ArsProgressDialog {
 // ignore: must_be_immutable
 class _ArsProgressDialogWidget extends StatelessWidget {
   /// Main widget of dialog,
-  Widget loadingWidget;
+  Widget? loadingWidget;
 
   /// This function will trigger when user dismisses dialog
-  final Function onDismiss;
+  final Function? onDismiss;
 
   /// Amount of background blur
-  final double blur;
+  final double? blur;
 
   /// Dialog's background color
-  final Color backgroundColor;
+  final Color? backgroundColor;
 
   /// Whether dialog can dismiss by touching outside or not
-  final bool dismissable;
+  final bool? dismissable;
 
   /// Duration of blur and background color animation
   final Duration animationDuration;
@@ -153,26 +153,26 @@ class _ArsProgressDialogWidget extends StatelessWidget {
 // ignore: must_be_immutable
 class _DialogBackground extends StatelessWidget {
   /// Widget of dialog, you can use NDialog, Dialog, AlertDialog or Custom your own Dialog
-  final Widget dialog;
+  final Widget? dialog;
 
   /// Because blur dialog cover the barrier, you have to declare here
-  final bool dismissable;
+  final bool? dismissable;
 
   /// Action before dialog dismissed
-  final Function onDismiss;
+  final Function? onDismiss;
 
   /// Creates an background filter that applies a Gaussian blur.
   /// Default = 0
-  final double blur;
+  final double? blur;
 
   /// Background color
-  final Color color;
+  final Color? color;
 
   /// Animation Duration
   final Duration animationDuration;
 
   /// Color Opacity
-  double _colorOpacity;
+  double? _colorOpacity;
 
   _DialogBackground(
       {this.dialog,
@@ -181,7 +181,7 @@ class _DialogBackground extends StatelessWidget {
       this.onDismiss,
       this.animationDuration: const Duration(milliseconds: 300),
       this.color}) {
-    _colorOpacity = color.opacity;
+    _colorOpacity = color!.opacity;
   }
 
   @override
@@ -189,27 +189,27 @@ class _DialogBackground extends StatelessWidget {
     return TweenAnimationBuilder(
         tween: Tween<double>(begin: 0, end: 1),
         duration: animationDuration,
-        builder: (context, val, child) {
+        builder: (context, dynamic val, child) {
           return Material(
             type: MaterialType.canvas,
-            color: color.withOpacity(val * _colorOpacity),
+            color: color!.withOpacity(val * _colorOpacity),
             child: WillPopScope(
               onWillPop: () async {
                 if (dismissable ?? true) {
-                  if (onDismiss != null) onDismiss();
+                  if (onDismiss != null) onDismiss!();
                   Navigator.pop(context);
                 }
                 return;
-              },
+              } as Future<bool> Function()?,
               child: Stack(
                 clipBehavior: Clip.antiAlias,
                 alignment: Alignment.center,
-                children: <Widget>[
+                children: <Widget?>[
                   GestureDetector(
                       onTap: dismissable ?? true
                           ? () {
                               if (onDismiss != null) {
-                                onDismiss();
+                                onDismiss!();
                               }
                               Navigator.pop(context);
                             }
@@ -224,7 +224,7 @@ class _DialogBackground extends StatelessWidget {
                         ),
                       )),
                   dialog
-                ],
+                ] as List<Widget>,
               ),
             ),
           );
