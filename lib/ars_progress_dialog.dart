@@ -70,7 +70,7 @@ class ArsProgressDialog {
       await showDialog(
         useSafeArea: useSafeArea,
         context: context,
-        barrierDismissible: dismissable ?? true,
+        barrierDismissible: dismissable,
         builder: (context) => _progressDialogWidget!,
         barrierColor: Colors.transparent,
       );
