@@ -199,8 +199,8 @@ class _DialogBackground extends StatelessWidget {
                   if (onDismiss != null) onDismiss!();
                   Navigator.pop(context);
                 }
-                return;
-              } as Future<bool> Function()?,
+                return true;
+              },
               child: Stack(
                 clipBehavior: Clip.antiAlias,
                 alignment: Alignment.center,
