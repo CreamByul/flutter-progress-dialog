@@ -224,7 +224,7 @@ class _DialogBackground extends StatelessWidget {
                         ),
                       )),
                   dialog
-                ] as List<Widget>,
+                ].whereType<Widget>().toList(),
               ),
             ),
           );
